@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  height: 50px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+.App-content {
+  width: 1250px;
+  margin: auto;
+  padding: 20px;
+}
+.App-filters {
+  width: 300px;
+  background-color: aqua;
+  float:left;
+  padding: 20px;
+}
+
+.App-tickets {
+  width: 800px;
+  float: right;
+  padding: 20px;
+}

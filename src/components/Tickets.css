@@ -1,0 +1,243 @@
+.ticket__wrapper {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    position: relative;
+    background-color: lightgrey;
+    margin-bottom: 1em;
+}
+
+.ticket__container {
+    display: table-row;
+}
+
+.ticket__buy-col {
+    display: table-cell;
+    width: 200px;
+    padding: 25px 20px 35px;
+    border-right: 1px solid #e4e7e8;
+    border-right: var(--general-border,1px solid #e4e7e8);
+    vertical-align: top;
+    border-radius: 5px 0 0 5px;
+    position: relative;
+    overflow: hidden;
+}
+.buy-button__link {
+    display: block;
+}
+
+.buy-button {
+    position: relative;
+}
+
+.buy-button__button {
+    display: block;
+    margin-bottom: 6px;
+    width: 100%;
+    height: 48px;
+    border-radius: 5px;
+    -webkit-box-shadow: #d64d08 0 1px 0 0, rgba(0,0,0,.1) 0 2px 1px 0;
+    box-shadow: 0 1px 0 0 #d64d08, 0 2px 1px 0 rgba(0,0,0,.1);
+    font-size: 1rem;
+    overflow: hidden;
+    background-color: #ff6d00;
+    color: #fff;
+}
+
+.buy-button__text {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 0;
+    margin-right: 3px;
+    font-weight: 600;
+}
+
+.ticket__content {
+    display: table-cell;
+    width: 510px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    position: relative;
+    vertical-align: top;
+    border-radius: 0 5px 5px 0;
+}
+
+.\--openable .ticket__segments {
+    cursor: pointer;
+}
+
+.\--oneway .ticket__segments {
+    padding-top: 15px;
+    min-height: 150px;
+}
+.ticket__segments {
+    padding: 0 40px 0 20px;
+}
+
+.segment {
+    position: relative;
+    padding-top: 12px;
+    padding-bottom: 15px;
+}
+
+.segment-route {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.cf:after, .cf:before, .segment-route:after, .segment-route:before {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+.cf:after, .segment-route:after {
+    clear: both;
+}
+
+.cf:after, .cf:before, .segment-route:after, .segment-route:before {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+.segment-route__origin {
+    text-align: left;
+}
+
+.segment-route__destination, .segment-route__origin {
+    width: 105px;
+    overflow: hidden;
+}
+
+.segment-route__time {
+    font-size: 1.75rem;
+    color: #4a4a4a;
+    color: var(--general-text-color,#4a4a4a);
+    line-height: 2.5rem;
+}
+
+.segment-route__city {
+    font-weight: 600;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.segment-route__city, .segment-route__date {
+    color: #8b9497;
+    line-height: 1.5;
+}
+
+.segment-route__path {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    padding: 7px 10px 0;
+}
+
+.segment-route__total-time {
+    color: #8e9497;
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 2px solid gray;
+}
+
+.segment-route__connector {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border-top: 3px solid;
+    border-bottom: 3px solid;
+    border-top-color: #fff;
+    border-top-color: var(--ticket-route-connector-border-color,#fff);
+    border-bottom-color: #fff;
+    border-bottom-color: var(--ticket-route-connector-border-color,#fff);
+    height: 1px;
+    background-color: #8c9497;
+    -ms-flex-preferred-size: 30px;
+    flex-basis: 30px;
+}
+
+
+
+.segment-route__path-stop.\--destination {
+    text-align: right;
+}
+.segment-route__path-stop.\--destination, .segment-route__path-stop.\--origin {
+    margin-left: 0;
+}
+.segment-route__path-stop {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.segment-route__path-stop.\--destination:before {
+    width: 17px;
+    height: 13px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTMiIHZpZXdCb3g9I…41OTUtLjY1IiBmaWxsPSIjQTRCMEI5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KPC9zdmc+Cg==);
+    right: 0;
+    pointer-events: none;
+}
+
+.segment-route__path-stop.\--destination:before, .segment-route__path-stop.\--origin:before {
+    content: "";
+    display: block;
+    position: absolute;
+    background-repeat: no-repeat;
+    margin: 0;
+    top: -22px;
+}
+
+
+
+.segment-route__path-stop .segment-route__path-iata {
+    position: absolute;
+}
+.segment-route__path-iata {
+    font-size: .625rem;
+    font-weight: 600;
+    top: 26px;
+    width: 26px;
+    left: -7px;
+    text-align: center;
+}
+
+.segment-route__destination {
+    text-align: right;
+}
+
+.segment-route__destination, .segment-route__origin {
+    width: 105px;
+    overflow: hidden;
+}
+
+.segment-route__time {
+    font-size: 1.75rem;
+    color: #4a4a4a;
+    color: var(--general-text-color,#4a4a4a);
+    line-height: 2.5rem;
+}
+
+
+
+.segment-route__city {
+    font-weight: 600;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.segment-route__city, .segment-route__date {
+    color: #8b9497;
+    line-height: 1.5;
+    font-size:0.75rem;
+}
+
+
