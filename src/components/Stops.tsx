@@ -4,6 +4,7 @@ import { getStopEndingByCount } from "../utils/functions";
 import {connect} from "react-redux";
 import {setActiveStops} from "../actions/Actions";
 import {bindActionCreators} from "redux";
+import {IStoreState} from "../reducers/TicketsReducer";
 
 interface StopsArray {
     stops: number[];
@@ -25,7 +26,6 @@ class Stops extends React.Component<StopsArray, {}> {
             stops.push(stop)
         }
         this.props.setActiveStops(stops);
-        this.forceUpdate();
     };
     private getCheckBoxValue = (ct: number) : boolean => {
         //Получаем значение чекбокса
@@ -34,7 +34,6 @@ class Stops extends React.Component<StopsArray, {}> {
     private allStopsValueChange = () => {
         //Для чекбокса "Все остановки" включаем дефолтное значение
         this.props.setActiveStops([...this.props.stops]);
-        this.forceUpdate();
     };
     private allStopsCheckboxValue() : boolean {
         //Проверяем значение чекбокса "Все значения".
@@ -70,7 +69,7 @@ class Stops extends React.Component<StopsArray, {}> {
     }
 }
 
-const mapStateToProp = (state: any) => ({
+const mapStateToProp = (state: IStoreState) => ({
     activeStops: state.activeStops,
     stops: state.stops
 });

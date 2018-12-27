@@ -2,6 +2,8 @@ import * as React from 'react';
 import './Tickets.css';
 import {CurrencyList, CurrencyInfo} from "../constants/CurrencyEnum";
 import { getStopEndingByCount } from "../utils/functions";
+import getDateTimeByString from "../utils/functions";
+import {connect} from "react-redux";
 
 interface Ticket {
     origin: string;
@@ -20,6 +22,7 @@ interface Ticket {
 interface TicketsProps {
     tickets: Ticket[];
     currency: CurrencyList;
+    activeStops: number[];
 }
 
 interface Currency {
@@ -34,10 +37,21 @@ class TicketsComponent extends React.Component<TicketsProps, {}> {
         return (price / cur.rate).toFixed(2) + ` ${cur.sign}`;
     }
 
+    private filterTicketsByStops = () => {
+        return this.props.tickets
+            .filter(t => this.props.activeStops.indexOf(t.stops) > -1)
+            .sort((a,b) => {
+                let dateA = getDateTimeByString(a.departure_date, a.departure_time);
+                let dateB = getDateTimeByString(b.departure_date, b.departure_time);
+                return dateA > dateB ? 1 : (dateA < dateB ?  -1 : 0);
+            });
+    };
+
     public render() {
-        return this.props.tickets.length > 0 ? (
+        let filteredTickets: Ticket[] = this.filterTicketsByStops();
+        return filteredTickets.length > 0 ? (
           <div>
-              {this.props.tickets.map((t,index) => (
+              {filteredTickets.map((t,index) => (
                   <div key={index} className="ticket__wrapper">
                       <div className="ticket__container">
                           <div className="ticket__buy-col">
@@ -78,4 +92,11 @@ class TicketsComponent extends React.Component<TicketsProps, {}> {
     }
 }
 
-export default TicketsComponent;
+
+const mapStateToProp = (state: any) => ({
+    currency: state.currency,
+    tickets: state.tickets,
+    activeStops: state.activeStops
+});
+
+export default connect(mapStateToProp)(TicketsComponent);

@@ -5,15 +5,21 @@ import {
 } from "../actions/Actions";
 import {Ticket} from "../components/App";
 
+export interface IStoreState {
+    tickets: number[];
+    currency: CurrencyList;
+    activeStops: number[];
+    stops: number[];
+}
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IStoreState = {
     tickets: [],
     currency: CurrencyList.RUB,
     activeStops: [],
     stops: []
 };
 
-export default function TicketsReducer(state = INITIAL_STATE, action: any)  {
+export default function TicketsReducer(state: IStoreState = INITIAL_STATE, action: any)  {
     switch (action.type) {
         case FETCH_TICKETS_BEGIN:
             return {
@@ -39,7 +45,7 @@ export default function TicketsReducer(state = INITIAL_STATE, action: any)  {
         case SET_ACTIVE_STOPS:
             return {
                 ...state,
-                activeStops: action.payload.activeStops
+                activeStops: Array.from(action.payload.activeStops)
             };
         case SET_NEW_CURRENCY:
             return {

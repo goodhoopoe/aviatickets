@@ -4,6 +4,7 @@ import {CurrencyList} from '../constants/CurrencyEnum';
 import {setNewCurrency} from "../actions/Actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {IStoreState} from "../reducers/TicketsReducer";
 
 interface CurrencyInterface {
     currency: CurrencyList;
@@ -14,7 +15,6 @@ class Currency extends React.Component<CurrencyInterface, {}> {
 
     private changeCurrency = (e: any) => {
         this.props.setNewCurrency(parseInt(e.target.value));
-        this.forceUpdate();
     };
 
     public render() {
@@ -28,7 +28,7 @@ class Currency extends React.Component<CurrencyInterface, {}> {
     }
 }
 
-const mapStateToProp = (state: any) => ({
+const mapStateToProp = (state: IStoreState) => ({
     currency: state.currency
 });
 

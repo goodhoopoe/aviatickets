@@ -4,12 +4,8 @@ import Currency from './Currency';
 import Stops from './Stops'
 import TicketsComponent from './Tickets'
 import {CurrencyList} from "../constants/CurrencyEnum";
-
-// import {getDateTimeByString} from '../utils/functions'
 import {connect} from "react-redux";
 import {fetchTickets} from "../actions/Actions";
-import getDateTimeByString from "../utils/functions";
-
 
 
 export interface Ticket {
@@ -30,6 +26,7 @@ export interface Tickets {
     tickets: Ticket[];
     activeStops: number[];
     stops: number[];
+    currency: CurrencyList;
     dispatch: any;
 }
 
@@ -40,15 +37,7 @@ class App extends React.Component<Tickets, {}> {
       this.props.dispatch(fetchTickets());
   }
 
-  private filterTicketsByStops = () => {
-    return this.props.tickets
-        .filter(t => this.props.activeStops.indexOf(t.stops) > -1)
-        .sort((a,b) => {
-            let dateA = getDateTimeByString(a.departure_date, a.departure_time);
-            let dateB = getDateTimeByString(b.departure_date, b.departure_time);
-            return dateA > dateB ? 1 : (dateA < dateB ?  -1 : 0);
-        });
-  };
+
 
   public render() {
     return (
@@ -62,7 +51,7 @@ class App extends React.Component<Tickets, {}> {
               <Stops />
           </div>
           <div className="App-tickets">
-              <TicketsComponent currency={CurrencyList.RUB} tickets={this.filterTicketsByStops()} />
+              <TicketsComponent  />
           </div>
         </div>
       </div>
@@ -73,7 +62,8 @@ class App extends React.Component<Tickets, {}> {
 const mapStateToProp = (state: any) => ({
     tickets: state.tickets,
     activeStops: state.activeStops,
-    stops: state.stops
+    stops: state.stops,
+    currency: state.currency
 });
 
 export default connect(mapStateToProp)(App);
