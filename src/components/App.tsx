@@ -4,11 +4,15 @@ import Currency from './Currency';
 import Stops from './Stops'
 import TicketsComponent from './Tickets'
 import {CurrencyList} from "../constants/CurrencyEnum";
-import {getDateTimeByString} from '../utils/functions'
+
+// import {getDateTimeByString} from '../utils/functions'
+import {connect} from "react-redux";
+import {fetchTickets} from "../actions/Actions";
+import getDateTimeByString from "../utils/functions";
 
 
 
-interface Ticket {
+export interface Ticket {
     origin: string;
     origin_name: string;
     destination: string;
@@ -22,46 +26,23 @@ interface Ticket {
     price: number;
 }
 
-interface Tickets {
+export interface Tickets {
     tickets: Ticket[];
-    currency: CurrencyList;
     activeStops: number[];
+    stops: number[];
+    dispatch: any;
 }
 
 
-class App extends React.Component<{}, Tickets> {
-  public constructor(props: Tickets) {
-      super(props);
+class App extends React.Component<Tickets, {}> {
 
-      this.state = {
-          tickets: [],
-          currency: CurrencyList.RUB,
-          activeStops: []
-      };
-
-      this.addTickets();
+  componentDidMount() {
+      this.props.dispatch(fetchTickets());
   }
 
-  private addTickets() {
-      fetch('/tickets.json')
-          .then(res => res.json())
-          .then(res => {
-              this.setState({
-                  tickets: res.tickets,
-                  activeStops: this.getUniqueStopsValues()
-              });
-          });
-  };
-
-  private currencyChange = (e: CurrencyList) => this.setState({currency: e});
-
-  private activeStopsChange = (e: number[]) => this.setState({activeStops: e});
-
-  private getUniqueStopsValues = () => Array.from(new Set(this.state.tickets.map(t=>t.stops))).sort();
-
   private filterTicketsByStops = () => {
-    return this.state.tickets
-        .filter(t => this.state.activeStops.indexOf(t.stops) > -1)
+    return this.props.tickets
+        .filter(t => this.props.activeStops.indexOf(t.stops) > -1)
         .sort((a,b) => {
             let dateA = getDateTimeByString(a.departure_date, a.departure_time);
             let dateB = getDateTimeByString(b.departure_date, b.departure_time);
@@ -77,11 +58,11 @@ class App extends React.Component<{}, Tickets> {
         </header>
         <div className="App-content">
           <div className="App-filters">
-              <Currency onChangeValue={this.currencyChange}/>
-              <Stops stops={this.getUniqueStopsValues()} activeStops={this.state.activeStops} onChangeValue={this.activeStopsChange}/>
+              <Currency />
+              <Stops />
           </div>
           <div className="App-tickets">
-              <TicketsComponent currency={this.state.currency} tickets={this.filterTicketsByStops()} />
+              <TicketsComponent currency={CurrencyList.RUB} tickets={this.filterTicketsByStops()} />
           </div>
         </div>
       </div>
@@ -89,4 +70,10 @@ class App extends React.Component<{}, Tickets> {
   }
 }
 
-export default App;
+const mapStateToProp = (state: any) => ({
+    tickets: state.tickets,
+    activeStops: state.activeStops,
+    stops: state.stops
+});
+
+export default connect(mapStateToProp)(App);

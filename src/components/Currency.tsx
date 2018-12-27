@@ -1,39 +1,42 @@
 import * as React from "react";
 import './Currency.css';
 import {CurrencyList} from '../constants/CurrencyEnum';
+import {setNewCurrency} from "../actions/Actions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
 interface CurrencyInterface {
-    onChangeValue: (value: CurrencyList) => void;
+    currency: CurrencyList;
+    setNewCurrency?: any;
 }
 
-interface CurrencyState {
-    activeCurrency: CurrencyList;
-}
-
-class Currency extends React.Component<CurrencyInterface, CurrencyState> {
-
-    public constructor(props: CurrencyInterface) {
-        super(props);
-
-        this.state = {
-            activeCurrency: CurrencyList.RUB
-        }
-    }
+class Currency extends React.Component<CurrencyInterface, {}> {
 
     private changeCurrency = (e: any) => {
-        this.setState({activeCurrency: parseInt(e.target.value)});
-        this.props.onChangeValue(parseInt(e.target.value));
+        this.props.setNewCurrency(parseInt(e.target.value));
+        this.forceUpdate();
     };
 
     public render() {
         return (
             <div className="btn-group">
-                <button className={this.state.activeCurrency === CurrencyList.RUB ? 'active-currency-button' : ''} value={CurrencyList.RUB} onClick={this.changeCurrency}>RUB</button>
-                <button className={this.state.activeCurrency === CurrencyList.USD ? 'active-currency-button' : ''} value={CurrencyList.USD} onClick={this.changeCurrency}>USD</button>
-                <button className={this.state.activeCurrency === CurrencyList.EUR ? 'active-currency-button' : ''} value={CurrencyList.EUR} onClick={this.changeCurrency}>EUR</button>
+                <button className={this.props.currency === CurrencyList.RUB ? 'active-currency-button' : ''} value={CurrencyList.RUB} onClick={this.changeCurrency}>RUB</button>
+                <button className={this.props.currency === CurrencyList.USD ? 'active-currency-button' : ''} value={CurrencyList.USD} onClick={this.changeCurrency}>USD</button>
+                <button className={this.props.currency === CurrencyList.EUR ? 'active-currency-button' : ''} value={CurrencyList.EUR} onClick={this.changeCurrency}>EUR</button>
             </div>
         );
     }
 }
 
-export default Currency;
+const mapStateToProp = (state: any) => ({
+    currency: state.currency
+});
+
+function mapDispatchToProps(dispatch: any) {
+    return bindActionCreators( {
+        setNewCurrency
+    }, dispatch );
+}
+
+export default connect(mapStateToProp, mapDispatchToProps)(Currency);
+

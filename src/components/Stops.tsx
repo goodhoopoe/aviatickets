@@ -1,39 +1,22 @@
 import * as React from 'react';
 import './Stops.css';
 import { getStopEndingByCount } from "../utils/functions";
+import {connect} from "react-redux";
+import {setActiveStops} from "../actions/Actions";
+import {bindActionCreators} from "redux";
 
 interface StopsArray {
     stops: number[];
     activeStops: number[];
-    onChangeValue: (e: number[]) => void;
+    dispatch?: any;
+    setActiveStops?: any;
 }
 
-class Stops extends React.Component<StopsArray, StopsArray> {
-    public constructor(props: StopsArray) {
-        super(props);
+class Stops extends React.Component<StopsArray, {}> {
 
-        //В состоянии храним массив включенных чекбоксов
-        this.state = {
-            stops: props.stops,
-            activeStops: [...props.stops] || [],
-            onChangeValue: this.props.onChangeValue
-        };
-    }
-
-    componentWillReceiveProps(newProps: StopsArray) {
-        //Обновляем состояние при получении новых данных в случае если список пересадок изменился. иначе оставляем.
-        if (this.state.stops.length != 0 && this.state.activeStops.length === newProps.activeStops.length && this.state.activeStops.every((value, index) => value === newProps.activeStops[index]) && (newProps.activeStops.every((value, index) => value === this.state.activeStops[index]))) {
-            return;
-        }
-        this.setState({
-            stops: newProps.stops,
-            activeStops: [...newProps.stops] || []
-        });
-        this.state.onChangeValue(newProps.stops);
-    }
     private checkBoxValueChanged = (e: React.ChangeEvent<HTMLInputElement>)  => {
         //Обновляем массив количества остановок
-        let stops = this.state.activeStops;
+        let stops = this.props.activeStops;
         let stop = parseInt( e.target.value);
         let index = stops.indexOf(stop);
         if (index !== -1) {
@@ -41,25 +24,21 @@ class Stops extends React.Component<StopsArray, StopsArray> {
         } else {
             stops.push(stop)
         }
-        this.setState({
-            activeStops: stops
-        });
-        this.state.onChangeValue(stops);
+        this.props.setActiveStops(stops);
+        this.forceUpdate();
     };
     private getCheckBoxValue = (ct: number) : boolean => {
         //Получаем значение чекбокса
-        return (this.state.activeStops || []).indexOf(ct) > -1;
+        return this.props.activeStops.indexOf(ct) > -1;
     };
     private allStopsValueChange = () => {
         //Для чекбокса "Все остановки" включаем дефолтное значение
-        this.setState({
-            activeStops: [...this.props.stops]
-        });
-        this.state.onChangeValue(this.props.stops);
+        this.props.setActiveStops([...this.props.stops]);
+        this.forceUpdate();
     };
     private allStopsCheckboxValue() : boolean {
         //Проверяем значение чекбокса "Все значения".
-        return (this.state.activeStops).length === this.state.stops.length && this.state.activeStops.length !== 0;
+        return this.props.activeStops.length === this.props.stops.length && this.props.activeStops.length !== 0;
     }
     public render() {
         return (
@@ -74,7 +53,7 @@ class Stops extends React.Component<StopsArray, StopsArray> {
                     />
                     Все
                 </div>
-                {this.props.stops.map(s => (
+                {this.props.stops ? this.props.stops.map((s:number) => (
                     <div key={s}>
                         <input
                             type="checkbox"
@@ -85,10 +64,21 @@ class Stops extends React.Component<StopsArray, StopsArray> {
                         />
                         {getStopEndingByCount(s)}
                     </div>
-                ))}
+                )) : ""}
             </div>
         );
     }
 }
 
-export default Stops;
+const mapStateToProp = (state: any) => ({
+    activeStops: state.activeStops,
+    stops: state.stops
+});
+
+function mapDispatchToProps(dispatch: any) {
+    return bindActionCreators( {
+        setActiveStops
+    }, dispatch );
+}
+
+export default connect(mapStateToProp, mapDispatchToProps)(Stops);

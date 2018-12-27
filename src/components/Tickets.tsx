@@ -28,9 +28,6 @@ interface Currency {
 }
 
 class TicketsComponent extends React.Component<TicketsProps, {}> {
-    public constructor(props: TicketsProps) {
-        super(props);
-    }
 
     private getTicketInfoByCurrency(price: number) : string {
         let cur: Currency = CurrencyInfo[this.props.currency];
