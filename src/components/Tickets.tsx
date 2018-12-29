@@ -4,20 +4,9 @@ import {CurrencyList, CurrencyInfo} from "../constants/CurrencyEnum";
 import { getStopEndingByCount } from "../utils/functions";
 import getDateTimeByString from "../utils/functions";
 import {connect} from "react-redux";
+import {IStoreState} from "../reducers/TicketsReducer";
+import {Ticket} from "./App";
 
-interface Ticket {
-    origin: string;
-    origin_name: string;
-    destination: string;
-    destination_name: string;
-    departure_date: string;
-    departure_time: string;
-    arrival_date: string;
-    arrival_time: string;
-    carrier: string;
-    stops: number;
-    price: number;
-}
 
 interface TicketsProps {
     tickets: Ticket[];
@@ -93,7 +82,7 @@ class TicketsComponent extends React.Component<TicketsProps, {}> {
 }
 
 
-const mapStateToProp = (state: any) => ({
+const mapStateToProp = (state: IStoreState) => ({
     currency: state.currency,
     tickets: state.tickets,
     activeStops: state.activeStops

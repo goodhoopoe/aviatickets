@@ -3,9 +3,9 @@ import './App.css';
 import Currency from './Currency';
 import Stops from './Stops'
 import TicketsComponent from './Tickets'
-import {CurrencyList} from "../constants/CurrencyEnum";
 import {connect} from "react-redux";
 import {fetchTickets} from "../actions/Actions";
+import {bindActionCreators, Dispatch} from "redux";
 
 
 export interface Ticket {
@@ -22,19 +22,15 @@ export interface Ticket {
     price: number;
 }
 
-export interface Tickets {
-    tickets: Ticket[];
-    activeStops: number[];
-    stops: number[];
-    currency: CurrencyList;
-    dispatch: any;
+interface AppProps {
+    fetchTickets: typeof fetchTickets;
 }
 
 
-class App extends React.Component<Tickets, {}> {
+class App extends React.Component<AppProps, {}> {
 
   componentDidMount() {
-      this.props.dispatch(fetchTickets());
+      this.props.fetchTickets();
   }
 
 
@@ -59,11 +55,10 @@ class App extends React.Component<Tickets, {}> {
   }
 }
 
-const mapStateToProp = (state: any) => ({
-    tickets: state.tickets,
-    activeStops: state.activeStops,
-    stops: state.stops,
-    currency: state.currency
-});
+function mapDispatchToProps(dispatch: Dispatch) {
+    return bindActionCreators( {
+        fetchTickets
+    }, dispatch );
+}
 
-export default connect(mapStateToProp)(App);
+export default connect(null, mapDispatchToProps)(App);

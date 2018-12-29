@@ -3,18 +3,18 @@ import './Currency.css';
 import {CurrencyList} from '../constants/CurrencyEnum';
 import {setNewCurrency} from "../actions/Actions";
 import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import {bindActionCreators, Dispatch} from "redux";
 import {IStoreState} from "../reducers/TicketsReducer";
 
 interface CurrencyInterface {
     currency: CurrencyList;
-    setNewCurrency?: any;
+    setNewCurrency: typeof setNewCurrency;
 }
 
 class Currency extends React.Component<CurrencyInterface, {}> {
 
-    private changeCurrency = (e: any) => {
-        this.props.setNewCurrency(parseInt(e.target.value));
+    private changeCurrency = (e: React.MouseEvent<HTMLElement>) => {
+        this.props.setNewCurrency(parseInt((e.target as HTMLInputElement).value));
     };
 
     public render() {
@@ -32,7 +32,7 @@ const mapStateToProp = (state: IStoreState) => ({
     currency: state.currency
 });
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: Dispatch) {
     return bindActionCreators( {
         setNewCurrency
     }, dispatch );

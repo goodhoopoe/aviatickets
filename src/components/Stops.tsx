@@ -3,14 +3,13 @@ import './Stops.css';
 import { getStopEndingByCount } from "../utils/functions";
 import {connect} from "react-redux";
 import {setActiveStops} from "../actions/Actions";
-import {bindActionCreators} from "redux";
+import {bindActionCreators, Dispatch} from "redux";
 import {IStoreState} from "../reducers/TicketsReducer";
 
 interface StopsArray {
     stops: number[];
     activeStops: number[];
-    dispatch?: any;
-    setActiveStops?: any;
+    setActiveStops: typeof setActiveStops;
 }
 
 class Stops extends React.Component<StopsArray, {}> {
@@ -74,7 +73,7 @@ const mapStateToProp = (state: IStoreState) => ({
     stops: state.stops
 });
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: Dispatch) {
     return bindActionCreators( {
         setActiveStops
     }, dispatch );

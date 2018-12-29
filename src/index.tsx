@@ -8,7 +8,6 @@ import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import TicketsReducer from "./reducers/TicketsReducer";
 
-
 const store = createStore(TicketsReducer, applyMiddleware(thunk));
 
 ReactDOM.render(

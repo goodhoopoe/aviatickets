@@ -1,5 +1,6 @@
 import {Ticket} from "../components/App";
 import {CurrencyList} from "../constants/CurrencyEnum";
+import {Dispatch} from "redux";
 
 export const FETCH_TICKETS_BEGIN   = 'FETCH_TICKETS_BEGIN';
 export const FETCH_TICKETS_SUCCESS = 'FETCH_TICKETS_SUCCESS';
@@ -32,7 +33,7 @@ export const setNewCurrency = (currency: CurrencyList) => ({
 });
 
 export function fetchTickets() {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         dispatch(fetchTicketsBegin());
         return fetch("/tickets.json")
             .then(handleErrors)

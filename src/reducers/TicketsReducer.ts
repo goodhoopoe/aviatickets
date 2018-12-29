@@ -6,7 +6,7 @@ import {
 import {Ticket} from "../components/App";
 
 export interface IStoreState {
-    tickets: number[];
+    tickets: Ticket[];
     currency: CurrencyList;
     activeStops: number[];
     stops: number[];
